@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 817e5c5f31ac04c4eb2d3592d7ae56e2, type: 3}
+  m_Name: Track_CornerRight
+  m_EditorClassIdentifier: 
+  chunkSize: {x: 40, y: 40}
+  levelChunks:
+  - {fileID: 1531138787456152470, guid: 6ed7853701aae41d692e50ea2fe7bbb6, type: 3}
+  exitDirection: 90
