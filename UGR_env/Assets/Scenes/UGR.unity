@@ -1248,7 +1248,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6483c5391949547f280b2c1e39e0b21c, type: 3}
   m_Name: 
@@ -1354,12 +1354,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6483c5391949547f280b2c1e39e0b21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 100, z: -1}
+  offset: {x: 0, y: 80, z: -1}
   target: {fileID: 1865760848}
   translateSpeed: 10
   rotationSpeed: 0
@@ -1439,7 +1439,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 3000
   testing: 0
-  resultFile: TrainEnv1_run1bis_40.txt
+  resultFile: Train1_run1_40.txt
   trackLayoutGenerator: {fileID: 87982439}
   replay: 0
   CheckpointReward: 0.05
@@ -1449,9 +1449,9 @@ MonoBehaviour:
   ConeReward: -2
   notGroundedReward: -0.05
   allNotGroundedReward: -2
-  amountOfSavepoints: 0
+  amountOfSavepoints: 1
   metersBetweenSavepoints: 20
-  metersSlideWindow: 8
+  metersSlideWindow: 10
   smoothingByAverage: 1
   distanceNextSavepoint: 0
   savepointPosition: 0
@@ -1479,7 +1479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 2
+    VectorObservationSize: 3
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0

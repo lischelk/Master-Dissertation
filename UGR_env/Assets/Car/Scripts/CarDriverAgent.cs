@@ -39,6 +39,7 @@ public class CarDriverAgent : Agent
     public bool debugSavepoints;
     public GameObject cube;
     public GameObject cube2;
+    [Range(-180,180)]
     public List<float> rotationSavepoints;
 
 
