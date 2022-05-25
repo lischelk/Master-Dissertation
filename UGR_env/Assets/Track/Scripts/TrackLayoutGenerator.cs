@@ -14,7 +14,9 @@ public class TrackLayoutGenerator : MonoBehaviour
     public int testSetSize = 20;
     private int trackCount;
     public Text Counter;
-
+    [Header("Domain Randomizer")]
+    public bool noise = true;
+    public float coneNoiseAmount = 0.5f;
 
     public TrackChunkData[] trackChunkData;
     private TrackChunkData previousChunk;
@@ -129,6 +131,16 @@ public class TrackLayoutGenerator : MonoBehaviour
             }
 
             GameObject clone = Instantiate(objectFromChunk, spawnPosition, Quaternion.Euler(0, previousDirection, 0));
+            if (noise)
+            {
+                Transform cones = clone.transform.Find("Cones");
+                int count = cones.childCount;
+                for (int conepair = 0; conepair < count; conepair++)
+                {
+                    cones.GetChild(conepair).Find("TrafficConeAllBlue").localPosition += new Vector3((2f * (float)random.NextDouble() - 1f) * coneNoiseAmount, 0, (2f * (float)random.NextDouble() - 1f) * coneNoiseAmount);
+                    cones.GetChild(conepair).Find("TrafficConeAllYellow").localPosition += new Vector3((2f * (float)random.NextDouble() - 1f) * coneNoiseAmount, 0, (2f * (float)random.NextDouble() - 1f) * coneNoiseAmount);
+                }
+            }
             chunkList.Add(clone);
             if (i == chunkFinish)
             {
@@ -180,10 +192,12 @@ public class TrackLayoutGenerator : MonoBehaviour
             // Stop if no more test tracks to drive
             if (useTest && trackCount == testSetSize)
             {
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
-#endif
                 return (Vector3.zero, Quaternion.identity, Vector3.zero, 0f);
+#endif*/
+                trackCount = 0;
+                
             }
             // Destory old track
             DestroyTrack();

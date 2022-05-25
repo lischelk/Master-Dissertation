@@ -10,6 +10,7 @@ public class CarDriverAgent : Agent
 {
     [Header("Compare with/without future observations")]
     public bool testing = false;
+    public bool logging = false;
     public string resultFile;
 
     [Header("Track Generator")]
@@ -62,6 +63,8 @@ public class CarDriverAgent : Agent
     private Vector3 offsetPosition;
     private float offsetRotation;
 
+    private int trackCount;
+
     private float lapTime;
 
     // Initialize when starting environment
@@ -95,6 +98,7 @@ public class CarDriverAgent : Agent
             }
         }
         finished = true;
+        trackCount = 0;
     }
 
     // Update racetime
@@ -107,19 +111,24 @@ public class CarDriverAgent : Agent
     // When episode begins reset environment
     public override void OnEpisodeBegin()
     {
-        MaxStep = (int)Academy.Instance.EnvironmentParameters.GetWithDefault("max_steps", 3000);
-        if (testing)
-            _ = WriteFinishFile("----------------------------------------------");
+        MaxStep = (int)Academy.Instance.EnvironmentParameters.GetWithDefault("max_steps", MaxStep);
         firstLap = true;
         ResetEnv(finished || !replay);
-        //ResetEnv(finished);
         finished = false;
+
+        if (logging)
+        {
+            _ = WriteFinishFile("----------------------------------------------");
+            _ = WriteFinishFile("Track: " + trackCount.ToString());
+        }
     }
 
     // Reset environment
     public void ResetEnv(bool reset = true)
     {
         (Vector3, Quaternion, Vector3, float) spawnPosition = trackLayoutGenerator.ResetTrack(reset, testing);
+        if (reset)
+            trackCount++;
         carController.ResetCar();
         transform.SetPositionAndRotation(spawnPosition.Item1, spawnPosition.Item2);
 
@@ -151,7 +160,7 @@ public class CarDriverAgent : Agent
     // Driving over a finish line
     void Finished()
     {
-        if (testing)
+        if (logging)
         {
             if (amountOfSavepoints > 0)
                 _ = WriteFinishFile("- Finished lap " + (firstLap ? "1" : "2") + " after " + lapTime.ToString() + (!firstLap ? " using lap 1" : ""));
@@ -398,7 +407,7 @@ public class CarDriverAgent : Agent
         if (collision.gameObject.TryGetComponent<TrafficCone>(out _))
         {
             AddReward(ConeReward);
-            if (testing)
+            if (logging)
             {
                 _ = WriteFinishFile("- CONE");
             }
@@ -411,12 +420,11 @@ public class CarDriverAgent : Agent
     }
     void OnNotGrounded()
     {
-        Debug.Log("Not Grounded");
         AddReward(notGroundedReward);
     }
     void OnAllNotGrounded()
     {
-        if (testing)
+        if (logging)
         {
             _ = WriteFinishFile("- FLIP");
         }
