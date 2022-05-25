@@ -72,5 +72,5 @@ UGR_env/[Aa]ssets/[Ss]treamingAssets/aa.meta
 UGR_env/[Aa]ssets/[Ss]treamingAssets/aa/*
 
 TrainEnvs/
-
+TestEnvs/
 .DS_Store
