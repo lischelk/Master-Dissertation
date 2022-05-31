@@ -10,8 +10,11 @@ public class CarDriverAgent : Agent
 {
     [Header("Compare with/without future observations")]
     public bool testing = false;
-    public bool logging = false;
-    public string resultFile;
+    public string baseResultfile;
+    public bool logTime = false;
+    public bool logSpeed = true;
+    public bool logPosition = true;
+    private int replayamount;
 
     [Header("Track Generator")]
     public TrackLayoutGenerator trackLayoutGenerator;
@@ -99,6 +102,7 @@ public class CarDriverAgent : Agent
         }
         finished = true;
         trackCount = 0;
+        replayamount = 0;
     }
 
     // Update racetime
@@ -116,11 +120,12 @@ public class CarDriverAgent : Agent
         ResetEnv(finished || !replay);
         finished = false;
 
-        if (logging)
+        if (logTime)
         {
-            _ = WriteFinishFile("----------------------------------------------");
-            _ = WriteFinishFile("Track: " + trackCount.ToString());
+            _ = WriteFinishFile("----------------------------------------------", baseResultfile + "_time.txt");
+            _ = WriteFinishFile("Track: " + trackCount.ToString(), baseResultfile + "_time.txt");
         }
+        replayamount++;
     }
 
     // Reset environment
@@ -160,12 +165,12 @@ public class CarDriverAgent : Agent
     // Driving over a finish line
     void Finished()
     {
-        if (logging)
+        if (logTime)
         {
             if (amountOfSavepoints > 0)
-                _ = WriteFinishFile("- Finished lap " + (firstLap ? "1" : "2") + " after " + lapTime.ToString() + (!firstLap ? " using lap 1" : ""));
+                _ = WriteFinishFile("- Finished lap " + (firstLap ? "1" : "2") + " after " + lapTime.ToString() + (!firstLap ? " using lap 1" : ""), baseResultfile + "_time.txt");
             else
-                _ = WriteFinishFile("- Finished lap " + (firstLap ? "1" : "2") + " after " + lapTime.ToString());
+                _ = WriteFinishFile("- Finished lap " + (firstLap ? "1" : "2") + " after " + lapTime.ToString(), baseResultfile + "_time.txt");
         } else
         {
             if (amountOfSavepoints > 0)
@@ -193,6 +198,10 @@ public class CarDriverAgent : Agent
                     obj.SetActive(true);
                 }
             }
+            if (logSpeed)
+                _ = WriteFinishFile("----------------------------------------------", baseResultfile + replayamount.ToString() + "_speed.txt");
+            if (logPosition)
+                _ = WriteFinishFile("----------------------------------------------", baseResultfile + replayamount.ToString() + "_position.txt");
         }
     }
 
@@ -241,6 +250,12 @@ public class CarDriverAgent : Agent
         // Adding car velocity and steering angle to observations
         sensor.AddObservation(carobs.Item1);
         sensor.AddObservation(carobs.Item2);
+
+        // Logging speed
+        if (logSpeed)
+            _ = WriteFinishFile(carobs.Item1.ToString(), baseResultfile + replayamount.ToString() + "_speed.txt");
+        if (logPosition)
+            _ = WriteFinishFile(carobs.Item3.ToString(), baseResultfile + replayamount.ToString() + "_position.txt");
 
         // Saving and using future observations
         if (amountOfSavepoints > 0)
@@ -407,9 +422,9 @@ public class CarDriverAgent : Agent
         if (collision.gameObject.TryGetComponent<TrafficCone>(out _))
         {
             AddReward(ConeReward);
-            if (logging)
+            if (logTime)
             {
-                _ = WriteFinishFile("- CONE");
+                _ = WriteFinishFile("- CONE", baseResultfile + "_time.txt");
             }
             EndEpisode();
         }
@@ -424,18 +439,18 @@ public class CarDriverAgent : Agent
     }
     void OnAllNotGrounded()
     {
-        if (logging)
+        if (logTime)
         {
-            _ = WriteFinishFile("- FLIP");
+            _ = WriteFinishFile("- FLIP", baseResultfile + "_time.txt");
         }
         AddReward(allNotGroundedReward);
         EndEpisode();
     }
 
     // Write lap times to file
-    public async Task WriteFinishFile(string line)
+    public async Task WriteFinishFile(string line, string File)
     {
-        using StreamWriter file = new StreamWriter(resultFile, append: true);
+        using StreamWriter file = new StreamWriter(File, append: true);
         await file.WriteLineAsync(line);
     }
 }

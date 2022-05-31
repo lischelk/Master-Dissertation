@@ -192,10 +192,10 @@ public class TrackLayoutGenerator : MonoBehaviour
             // Stop if no more test tracks to drive
             if (useTest && trackCount == testSetSize)
             {
-/*#if UNITY_EDITOR
+#if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
                 return (Vector3.zero, Quaternion.identity, Vector3.zero, 0f);
-#endif*/
+#endif
                 trackCount = 0;
                 
             }

@@ -11,7 +11,7 @@ public class CarController : MonoBehaviour
     [Header("Car Specs")]
     public float motorForce;
     public float breakForce;
-    public float decelerationForce;
+    public float decelerationForce=50;
     public float maxSteerAngle;
     public float maxSpeed;
     public float turnspeed = 5;
@@ -130,7 +130,7 @@ public class CarController : MonoBehaviour
     IEnumerator SetMotorTorque(AxleInfo axleInfo, float throttle)
     {
         if (noise)
-            yield return new WaitForSeconds((float)random.NextDouble() * delayTimeControl);
+            yield return new WaitForSeconds((float)random.NextDouble() * delayTimeControl * Mathf.Pow(10,-6));
         axleInfo.leftWheel.motorTorque = throttle * motorForce;
         axleInfo.rightWheel.motorTorque = throttle * motorForce;
     }
@@ -138,7 +138,7 @@ public class CarController : MonoBehaviour
     IEnumerator SetSteeringAngle(AxleInfo axleInfo, float steering)
     {
         if (noise)
-            yield return new WaitForSeconds((float)random.NextDouble() * delayTimeControl);
+            yield return new WaitForSeconds((float)random.NextDouble() * delayTimeControl * Mathf.Pow(10, -6));
         float error = steering * maxSteerAngle - axleInfo.leftWheel.steerAngle;
         float wheelCorrection = wheelPIDControler.GetOutput(error, Time.deltaTime);
 
@@ -156,7 +156,7 @@ public class CarController : MonoBehaviour
     IEnumerator SetBrakeForce(AxleInfo axleInfo, float brakeForce)
     {
         if (noise)
-            yield return new WaitForSeconds((float)random.NextDouble() * delayTimeControl);
+            yield return new WaitForSeconds((float)random.NextDouble() * delayTimeControl * Mathf.Pow(10, -6));
         axleInfo.leftWheel.brakeTorque = brakeForce;
         axleInfo.rightWheel.brakeTorque = brakeForce;
     }
@@ -215,8 +215,8 @@ public class CarController : MonoBehaviour
                 if (noise)
                 {
                     return (
-                    car.velocity.magnitude * 3.6f / maxSpeed + (2f * (float)random.NextDouble() - 1f) * speedNoiseAmount,
-                    axleInfo.leftWheel.steerAngle / maxSteerAngle + (2f * (float)random.NextDouble() - 1f) * steeringAngleNoiseAmount,
+                    (car.velocity.magnitude * 3.6f + (2f * (float)random.NextDouble() - 1f) * speedNoiseAmount) / maxSpeed,
+                    (axleInfo.leftWheel.steerAngle + (2f * (float)random.NextDouble() - 1f) * steeringAngleNoiseAmount) / maxSteerAngle,
                     car.transform.position + new Vector3((2f * (float)random.NextDouble() - 1f) * positionNoiseAmount, 0, (2f * (float)random.NextDouble() - 1f) * positionNoiseAmount),
                     car.transform.forward + new Vector3((2f * (float)random.NextDouble() - 1f) * directionNoiseAmount, 0, (2f * (float)random.NextDouble() - 1f) * directionNoiseAmount)
                     );

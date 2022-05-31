@@ -153,10 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunksToSpawn: 2
-  chunkFinishDefault: 5
-  testSetSize: 50
+  chunkFinishDefault: 4
+  testSetSize: 1
   Counter: {fileID: 846250701}
-  noise: 0
+  noise: 1
   coneNoiseAmount: 0.3
   trackChunkData:
   - {fileID: 11400000, guid: ad829e42acc1b43dc903f4e1e8991c50, type: 2}
@@ -1426,10 +1426,10 @@ MonoBehaviour:
   wheelD: 0.02
   noise: 0
   steeringAngleNoiseAmount: 0.1
-  speedNoiseAmount: 0.1
+  speedNoiseAmount: 0.25
   positionNoiseAmount: 0.1
-  directionNoiseAmount: 0.1
-  delayTimeControl: 0
+  directionNoiseAmount: 2.5
+  delayTimeControl: 400
 --- !u!114 &1865760850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1446,11 +1446,13 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
-  testing: 1
-  logging: 1
-  resultFile: TrainEnv1_run1_5_50.txt
+  testing: 0
+  baseResultfile: LogFile
+  logTime: 0
+  logSpeed: 0
+  logPosition: 0
   trackLayoutGenerator: {fileID: 87982439}
-  replay: 1
+  replay: 0
   CheckpointReward: 0.05
   lapReward: 0.5
   FinishReward: 0.5
@@ -1459,7 +1461,7 @@ MonoBehaviour:
   notGroundedReward: -0.05
   allNotGroundedReward: -5
   amountOfSavepoints: 1
-  metersBetweenSavepoints: 20
+  metersBetweenSavepoints: 25
   metersSlideWindow: 10
   smoothingByAverage: 1
   distanceNextSavepoint: 0
@@ -1470,10 +1472,6 @@ MonoBehaviour:
   cube: {fileID: 3415844502165340153, guid: 39cfa8fd0962f499ba05331893388e9b, type: 3}
   cube2: {fileID: 3779689754025020222, guid: 705be7a7a41c04b66ba55bfeb4bf9d3f, type: 3}
   rotationSavepoints:
-  - 0
-  - 0
-  - 0
-  - 0
   - 0
 --- !u!114 &1865760851
 MonoBehaviour:
@@ -1497,7 +1495,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 7f4c1a81951b94e418b4644fd8cc77f6, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: c3b07190129074cf895df2ae64847c5e, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: CarDriverAI
@@ -1563,22 +1561,6 @@ MonoBehaviour:
   rayMissColor: {r: 0, g: 0, b: 0, a: 1}
   m_StartVerticalOffset: 1
   m_EndVerticalOffset: 1
---- !u!114 &1865760856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1865760846}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Record: 1
-  NumStepsToRecord: 0
-  DemonstrationName: HumanDriver2
-  DemonstrationDirectory: HumanDriverRecording
 --- !u!1 &1919131400
 GameObject:
   m_ObjectHideFlags: 0
